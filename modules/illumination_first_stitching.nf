@@ -1,5 +1,4 @@
 process collect_dataset_info {
-    label "Collect CODEX dataset info"
     input:
     path base_directory
 
