@@ -112,16 +112,17 @@ class ConfigCreator:
 
         assert isinstance(json_meta, dict), f"Expected type dict ({path_to_meta})"
 
-        # If the 'ChannelDetails' key is present as 'channelDetails', fix it
-        if 'channelDetails' in json_meta:
-            json_meta['ChannelDetails'] = json_meta.pop('channelDetails')
+        # If the 'ChannelDetails' key is present as 'channelNames', fix it
+        if 'channelNames' in json_meta:
+            print("Renaming the channelNames key to ChannelDetails")
+            json_meta['ChannelDetails'] = json_meta.pop('channelNames')
 
         assert 'ChannelDetails' in json_meta, f"Expected key 'ChannelDetails' in {path_to_meta}"
 
-        # If the 'ChannelDetailsArray' key is present as 'channelDetailsArray', fix it
-        if 'channelDetailsArray' in json_meta['ChannelDetails']:
-            json_meta['ChannelDetails']['ChannelDetailsArray'] = json_meta['ChannelDetails'].pop('channelDetailsArray')
-        
+        # If the 'ChannelDetailsArray' key is present as 'channelNamesArray', fix it
+        if 'channelNamesArray' in json_meta['ChannelDetails']:
+            json_meta['ChannelDetails']['ChannelDetailsArray'] = json_meta['ChannelDetails'].pop('channelNamesArray')
+
         assert 'ChannelDetailsArray' in json_meta['ChannelDetails'], f"Expected key 'ChannelDetailsArray' in {path_to_meta}"
 
         return json_meta
