@@ -109,6 +109,21 @@ class ConfigCreator:
     def _read_json_meta(self, path_to_meta: Path) -> Dict[str, Union[str, int, dict, list]]:
         with open(path_to_meta, "r") as s:
             json_meta = json.load(s)
+
+        assert isinstance(json_meta, dict), f"Expected type dict ({path_to_meta})"
+
+        # If the 'ChannelDetails' key is present as 'channelDetails', fix it
+        if 'channelDetails' in json_meta:
+            json_meta['ChannelDetails'] = json_meta.pop('channelDetails')
+
+        assert 'ChannelDetails' in json_meta, f"Expected key 'ChannelDetails' in {path_to_meta}"
+
+        # If the 'ChannelDetailsArray' key is present as 'channelDetailsArray', fix it
+        if 'channelDetailsArray' in json_meta['ChannelDetails']:
+            json_meta['ChannelDetails']['ChannelDetailsArray'] = json_meta['ChannelDetails'].pop('channelDetailsArray')
+        
+        assert 'ChannelDetailsArray' in json_meta['ChannelDetails'], f"Expected key 'ChannelDetailsArray' in {path_to_meta}"
+
         return json_meta
 
     def _create_proc_date(self) -> str:
